@@ -7,7 +7,12 @@
 - [X] Clipboard (Text and Images)
 - [ ] Discord Data (Token extraction is missing)
 - [X] Discord Boot overwriter
+- [ ] BetterDiscord Installer
 
+
+
+#### Better Discord Installer
+Implement a Installer to inject code into Discord to install custom made Plugins and other spooky stuff
 
 #### Discord Boot Overwriter
 Run code when Discord Core(`discord_desktop_core`) module is beeing started.
