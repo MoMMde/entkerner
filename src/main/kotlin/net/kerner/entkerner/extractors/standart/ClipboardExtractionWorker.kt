@@ -30,7 +30,7 @@ class ClipboardExtractionWorker(ioClient: HttpClient) : AbstractDataExtractor<An
         return content
     }
 
-    override suspend fun <V> handleExtractedData(data: Any?): V {
+    override suspend fun <V : Any> handleExtractedData(data: Any?): V {
         if (data is String) return data as V
         return (data as BufferedImage).toBase64() as V
     }

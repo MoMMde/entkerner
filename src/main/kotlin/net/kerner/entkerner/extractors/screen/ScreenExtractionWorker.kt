@@ -9,11 +9,7 @@ import java.awt.GraphicsEnvironment
 import java.awt.Rectangle
 import java.awt.Robot
 import java.awt.image.BufferedImage
-import java.io.ByteArrayOutputStream
 import java.io.File
-import java.util.Base64
-import java.util.UUID
-import javax.imageio.ImageIO
 
 class ScreenExtractionWorker(ioClient: HttpClient) : AbstractDataExtractor<List<ScreenData>>(ioClient) {
     override val name: String = "ScreenDataExtractionService"
@@ -43,7 +39,7 @@ class ScreenScreenshotWorker(ioClient: HttpClient) : AbstractDataExtractor<List<
         }
     }
 
-    override suspend fun <V> handleExtractedData(data: List<BufferedImage>): V {
+    override suspend fun <V : Any> handleExtractedData(data: List<BufferedImage>): V {
         return data.map(BufferedImage::toBase64) as V
     }
 }
