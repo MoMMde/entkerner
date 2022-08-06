@@ -20,9 +20,9 @@ object FileUtils {
     }
 }
 
-// todo
+val nullPath = Path("")
 val nullPaths = object : SystemFileURI() {
-    override val linux = Path("/")
-    override val windows = linux
-    override val xnu = linux
+    override val linux = nullPath
+    override val windows = nullPath
+    override val xnu = nullPath
 }

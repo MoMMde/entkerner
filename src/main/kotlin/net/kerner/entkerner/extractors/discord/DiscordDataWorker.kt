@@ -18,9 +18,8 @@ private const val USER_INFORMATION_ENDPOINT = "https://discordapp.com/api/v6/use
 private const val USER_AVATAR_ENDPOINT = "https://cdn.discordapp.com/avatars/{user_id}/{avatar_id}.webp"
 
 class DiscordDataWorker(
-        httpClient: HttpClient,
-        val entkerner: Entkerner
-) : AbstractDataExtractor<DiscordData, DiscordData>(httpClient) {
+        httpClient: HttpClient
+) : AbstractDataExtractor<DiscordData>(httpClient) {
     override val name: String = "DiscordDataExtractionService"
     override val fileDirectories = object : SystemFileURI() {
         override val linux = config / "discord"
@@ -29,7 +28,7 @@ class DiscordDataWorker(
     }
 
     private fun getToken(): String {
-        return ""
+        return "" // todo: find a way to get the data windows is kinda easy but on linux and macOs, i have no idea how
     }
 
     override suspend fun extractData(file: File): DiscordData {

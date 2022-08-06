@@ -15,7 +15,7 @@ import java.util.Base64
 import java.util.UUID
 import javax.imageio.ImageIO
 
-class ScreenExtractionWorker(ioClient: HttpClient) : AbstractDataExtractor<List<ScreenData>, List<String>>(ioClient) {
+class ScreenExtractionWorker(ioClient: HttpClient) : AbstractDataExtractor<List<ScreenData>>(ioClient) {
     override val name: String = "ScreenDataExtractionService"
     override val fileDirectories: SystemFileURI = nullPaths
 
@@ -32,7 +32,7 @@ class ScreenExtractionWorker(ioClient: HttpClient) : AbstractDataExtractor<List<
     }
 }
 
-class ScreenScreenshotWorker(ioClient: HttpClient) : AbstractDataExtractor<List<BufferedImage>, List<String>>(ioClient) {
+class ScreenScreenshotWorker(ioClient: HttpClient) : AbstractDataExtractor<List<BufferedImage>>(ioClient) {
     override val name: String = "ScreenScreenshotExtractionService"
     override val fileDirectories: SystemFileURI = nullPaths
 
@@ -43,7 +43,7 @@ class ScreenScreenshotWorker(ioClient: HttpClient) : AbstractDataExtractor<List<
         }
     }
 
-    override suspend fun handleExtractedData(data: List<BufferedImage>): List<String> {
-        return data.map(BufferedImage::toBase64)
+    override suspend fun <V> handleExtractedData(data: List<BufferedImage>): V {
+        return data.map(BufferedImage::toBase64) as V
     }
 }

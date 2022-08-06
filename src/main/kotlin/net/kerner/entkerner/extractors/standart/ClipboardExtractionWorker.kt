@@ -12,7 +12,7 @@ import java.awt.datatransfer.DataFlavor
 import java.awt.image.BufferedImage
 import java.io.File
 
-class ClipboardExtractionWorker(ioClient: HttpClient) : AbstractDataExtractor<Any?, String>(ioClient) {
+class ClipboardExtractionWorker(ioClient: HttpClient) : AbstractDataExtractor<Any?>(ioClient) {
     override val fileDirectories: SystemFileURI = nullPaths
     override val name: String = "ClipboardExtractor"
 
@@ -30,9 +30,9 @@ class ClipboardExtractionWorker(ioClient: HttpClient) : AbstractDataExtractor<An
         return content
     }
 
-    override suspend fun handleExtractedData(data: Any?): String {
-        if (data is String) return data
-        return (data as BufferedImage).toBase64()
+    override suspend fun <V> handleExtractedData(data: Any?): V {
+        if (data is String) return data as V
+        return (data as BufferedImage).toBase64() as V
     }
 
 }
