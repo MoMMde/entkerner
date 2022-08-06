@@ -1,5 +1,5 @@
 ## Entkerner
-** Educational Purposes Only!**
+**Educational Purposes Only!**
 
 ### Project
 This project is, as already said, for educational purposes only. 
