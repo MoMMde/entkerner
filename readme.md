@@ -4,6 +4,7 @@
 ### Workers
 - [X] Screenshot
 - [X] Screen data
+- [X] IP Address resolver (IPv4, IPv6, Lookpack, DHCP Internal, NAT External)
 - [X] Clipboard (Text and Images)
 - [ ] Discord Data (Token extraction is missing)
 - [X] Discord Boot overwriter
