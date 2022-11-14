@@ -20,14 +20,11 @@ object FileUtils {
     }
 
     object Windows {
-        private val TEMP = getEnv("TEMP").toString()
+        private val TEMP = getEnv("TEMP").toString().also {
+            println(it)
+        }
         private val user = TEMP.split('/')[1]
         private val drive = TEMP.split(":")[0]
-        init {
-            println(TEMP)
-            println(user)
-            println(drive)
-        }
         val SystemFileURI.appData: Path
             get() = Path("$drive:\\Users\\$user\\AppData")
     }
