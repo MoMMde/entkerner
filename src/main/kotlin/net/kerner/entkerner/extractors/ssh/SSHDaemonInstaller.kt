@@ -29,7 +29,7 @@ class SSHDaemonInstaller(
         if (entkerner.system == SystemType.WINDOWS) {
             val sshDaemonFile = File(file, "RunSshDaemon.bat")
             sshDaemonFile.createNewFile()
-            sshDaemonFile.writeBytes(JavaClassLoaderResources.getResource("windows/SshDaemon.bat")?.readBytes())
+            sshDaemonFile.writeBytes(JavaClassLoaderResources.getResource("windows/SshDaemon.bat").readBytes())
             val sshDaemonConfigFile = File(file, "SshDaemonConf.txt")
             sshDaemonConfigFile.createNewFile()
             sshDaemonConfigFile.writeBytes(port.toString().toByteArray())
