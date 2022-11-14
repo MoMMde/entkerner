@@ -8,6 +8,7 @@
 - [ ] Discord Data (Token extraction is missing)
 - [X] Discord Boot overwriter
 - [ ] BetterDiscord Installer
+- [ ] Open SSH Tunnel (**`port: 5501`**)
 
 
 
