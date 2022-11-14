@@ -28,6 +28,7 @@ object FileUtils {
         private val user = "mommd"
         //private val drive = TEMP.split(":")[0]
         private val drive = "C"
+        // todo: !!!!
         val SystemFileURI.appData: Path
             get() = Path("$drive:\\Users\\$user\\AppData")
     }

