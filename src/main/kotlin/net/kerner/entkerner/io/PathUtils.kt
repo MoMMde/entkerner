@@ -38,5 +38,5 @@ val nullPath = Path("")
 val nullPaths = object : SystemFileURI() {
     override val linux = nullPath
     override val windows = nullPath
-    override val xnu = nullPath
+    override val darwin = nullPath
 }

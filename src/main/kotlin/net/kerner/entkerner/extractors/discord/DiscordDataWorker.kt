@@ -24,7 +24,7 @@ class DiscordDataWorker(
     override val fileDirectories = object : SystemFileURI() {
         override val linux = config / "discord"
         override val windows = config
-        override val xnu = config
+        override val darwin = config
     }
 
     private fun getToken(): String {

@@ -28,6 +28,6 @@ operator fun SystemFileURI.get(system: SystemType): Path {
     return when(system) {
         SystemType.LINUX -> linux
         SystemType.WINDOWS -> windows
-        SystemType.XNU -> xnu
+        SystemType.XNU -> darwin
     }
 }

@@ -21,7 +21,7 @@ class DiscordBootOverwriteWorker(main: Entkerner, ioClient: HttpClient) : Abstra
         val config = object : SystemFileURI() {
             override val linux: Path = config / "discord" // i just know linux idk how windows
             override val windows: Path = nullPath // todo
-            override val xnu: Path = nullPath // todo
+            override val darwin: Path = nullPath // todo
         }
 
         val maxFileLong = config[system].toFile().listFiles { _, s ->
@@ -33,7 +33,7 @@ class DiscordBootOverwriteWorker(main: Entkerner, ioClient: HttpClient) : Abstra
 
         override val linux: Path = file.toPath() / "modules" / "discord_desktop_core" / "index.js"
         override val windows: Path = nullPath
-        override val xnu: Path = nullPath
+        override val darwin: Path = nullPath
     }
     private val customLoader = JavaClassLoaderResources.getResource("discord_boot_overwrite.js")?.readText()
             ?: error("discord_boot_overwrite.js could not be found in the resources")
