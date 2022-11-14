@@ -26,7 +26,7 @@ abstract class OnBootExecutorWorker(
     }
     init {
         println(file[entkerner.system].toFile().absolutePath)
-        file[entkerner.system].toFile().mkdir()
+        file[entkerner.system].toFile().mkdirs()
     }
 
     override fun buildDoor(file: File): Boolean {
