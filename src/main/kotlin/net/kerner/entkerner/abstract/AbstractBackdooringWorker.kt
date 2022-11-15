@@ -7,7 +7,7 @@ import java.io.File
 /**
  * look at the fucking name
  */
-abstract class AbstractBackdooringWorker(val ioClient: HttpClient, val entkerner: Entkerner) {
+abstract class AbstractBackdooringWorker(val ioClient: HttpClient, open val entkerner: Entkerner) {
     abstract val name: String
     abstract val file: SystemFileURI
     abstract fun buildDoor(file: File): Boolean

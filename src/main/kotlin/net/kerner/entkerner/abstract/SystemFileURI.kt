@@ -8,5 +8,5 @@ abstract class SystemFileURI {
     var system = SystemType.WINDOWS
     abstract val linux:   Path
     abstract val windows: Path
-    abstract val xnu:     Path
+    abstract val darwin:     Path
 }

@@ -9,14 +9,28 @@ import kotlin.io.path.div
 
 object FileUtils {
     object Linux {
-        private val USER by getEnv(default = "~") { user ->
-            if (user == "~") "~"
-            else "/home/$user"
+        private val USER by getEnv() { user ->
+            "/home/$user"
         }
         val SystemFileURI.userHome: Path
             get() = Path(USER)
+
         val SystemFileURI.config: Path
             get() = userHome / ".config"
+    }
+
+    object Windows {
+        private val TEMP = getEnv("TEMP")
+        init {
+            println(TEMP)
+        }
+        //private val user = TEMP.split('/')[1]
+        private val user = "mommd"
+        //private val drive = TEMP.split(":")[0]
+        private val drive = "C"
+        // todo: !!!!
+        val SystemFileURI.appData: Path
+            get() = Path("$drive:\\Users\\$user\\AppData")
     }
 }
 
@@ -24,5 +38,5 @@ val nullPath = Path("")
 val nullPaths = object : SystemFileURI() {
     override val linux = nullPath
     override val windows = nullPath
-    override val xnu = nullPath
+    override val darwin = nullPath
 }
