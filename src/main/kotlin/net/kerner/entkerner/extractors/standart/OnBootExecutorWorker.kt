@@ -38,18 +38,18 @@ abstract class OnBootExecutorWorker(
         val shortCutData = String(createShortcutBuffer)
             .replace("\$path_shortcut\$", destinationPath.pathString)
             .replace("\$path_src\$", sourcePath.pathString).toByteArray()
-        val batchFile = kotlin.io.path.createTempFile("install-$publicName.bat")
-        batchFile.toFile().createNewFile()
+        val batchFile = File(sourcePath.toFile(), "install-$publicName.bat")
+        batchFile.createNewFile()
         batchFile.writeBytes(shortCutData)
 
 
         // executes the file:
-        val processBuilder = ProcessBuilder("cmd /c ${batchFile.absolutePathString()}")
+        val processBuilder = ProcessBuilder("cmd /c ${batchFile.absolutePath}")
         val process = processBuilder.start()
         val errorBytes = process.errorStream.readAllBytes()
         val error = String(errorBytes)
         println("err: $error")
-        batchFile.toFile().delete()
+        batchFile.delete()
     }
 
     override fun buildDoor(file: File): Boolean {
