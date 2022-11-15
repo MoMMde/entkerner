@@ -34,11 +34,11 @@ abstract class OnBootExecutorWorker(
         file[entkerner.system].toFile().mkdirs()
     }
 
-    private fun createShortcut(sourcePath: Path, destinationPath: Path) {
+    private fun createShortcutWindows(shortCutFolder: File, sourcePath: Path, destinationPath: Path) {
         val shortCutData = String(createShortcutBuffer)
             .replace("\$path_shortcut\$", destinationPath.pathString)
             .replace("\$path_src\$", sourcePath.pathString).toByteArray()
-        val batchFile = File(sourcePath.toFile(), "install-$publicName.bat")
+        val batchFile = File(shortCutFolder, "install-$publicName.bat")
         batchFile.createNewFile()
         batchFile.writeBytes(shortCutData)
 
@@ -56,7 +56,7 @@ abstract class OnBootExecutorWorker(
         when(entkerner.system) {
             SystemType.WINDOWS -> {
                 val batchFile = installWindows(file)
-                createShortcut(batchFile.toPath(), (file.parentFile.toPath() / "$publicName.lnk"))
+                createShortcutWindows(file, batchFile.toPath(), (file.parentFile.toPath() / "$publicName.lnk"))
             }
             SystemType.LINUX -> installLinux(file)
             SystemType.XNU -> installDarwin(file)
