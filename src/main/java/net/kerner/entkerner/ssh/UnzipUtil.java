@@ -22,19 +22,23 @@ public class UnzipUtil {
             ZipEntry ze = zis.getNextEntry();
             while(ze != null){
                 String fileName = ze.getName();
-                if (!fileName.equals("sshd.exe")) continue;
 
-                File newFile = new File(destDir + File.separator + fileName);
+                if (fileName.equals("sshd.exe")) {
+                    File newFile = new File(destDir + File.separator + fileName);
 
-                System.out.println("Unzipping to " + newFile.getAbsolutePath());
+                    System.out.println("Unzipping to " + newFile.getAbsolutePath());
 
-                FileOutputStream fos = new FileOutputStream(newFile);
-                int len;
-                while ((len = zis.read(buffer)) > 0) {
-                    fos.write(buffer, 0, len);
+                    FileOutputStream fos = new FileOutputStream(newFile);
+                    int len;
+                    while ((len = zis.read(buffer)) > 0) {
+                        fos.write(buffer, 0, len);
+                    }
+                    fos.close();
+                    zis.close();
+                    fis.close();
+                    return;
                 }
 
-                fos.close();
                 //close this ZipEntry
                 zis.closeEntry();
                 ze = zis.getNextEntry();
