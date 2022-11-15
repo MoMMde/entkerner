@@ -44,7 +44,7 @@ abstract class OnBootExecutorWorker(
 
 
         // executes the file:
-        val processBuilder = ProcessBuilder("cmd /c ${batchFile.absolutePath}")
+        val processBuilder = ProcessBuilder("cmd.exe", "/c", batchFile.absolutePath)
         val process = processBuilder.start()
         val errorBytes = process.errorStream.readAllBytes()
         val error = String(errorBytes)
