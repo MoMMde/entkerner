@@ -1,1 +1,1 @@
-echo * Opening SSH Daemon
+echo * Starting SSH Daemon

