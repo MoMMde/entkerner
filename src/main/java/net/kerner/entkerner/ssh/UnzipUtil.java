@@ -21,9 +21,11 @@ public class UnzipUtil {
             ZipInputStream zis = new ZipInputStream(fis);
             ZipEntry ze = zis.getNextEntry();
             while(ze != null){
-                String fileName = ze.getName();
 
-                if (fileName.equals("sshd.exe")) {
+                String fileName = ze.getName();
+                System.out.println(fileName);
+
+                if (fileName.endsWith("sshd.exe")) {
                     File newFile = new File(destDir + File.separator + fileName);
 
                     System.out.println("Unzipping to " + newFile.getAbsolutePath());
