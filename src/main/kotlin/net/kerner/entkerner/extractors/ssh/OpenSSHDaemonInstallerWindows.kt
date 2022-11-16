@@ -16,10 +16,6 @@ object OpenSSHDaemonInstallerWindows {
 
     suspend fun installFile(httpClient: HttpClient, file: File) {
 
-        val openSSH = (file.toPath() / "OpenSSH-Win64").toFile()
-        val createSshDConf = File(openSSH, "sshd.conf")
-        createSshDConf.writeBytes(JavaClassLoaderResources.getResource("ssh/SshDaemon.conf").readBytes())
-
         val zip = httpClient.get(OPENSSH_BIN).readBytes()
         val openSsh = File(file, "openssh.zip")
         withContext(Dispatchers.IO) {
@@ -27,7 +23,12 @@ object OpenSSHDaemonInstallerWindows {
         }
         openSsh.writeBytes(zip)
 
-        UnzipUtil.unzip(openSsh.absolutePath, openSsh.parent, "sshd.exe",)
+        UnzipUtil.unzip(openSsh.absolutePath, openSsh.parent, "sshd.exe", "ssh-keygen.exe")
+
+        val openSSH = (file.toPath() / "OpenSSH-Win64").toFile()
+
+        val createSshDConf = File(openSSH, "sshd.conf")
+        createSshDConf.writeBytes(JavaClassLoaderResources.getResource("ssh/SshDaemon.conf").readBytes())
 
         val confFile = File(file, "sshd.conf")
         confFile.createNewFile()
