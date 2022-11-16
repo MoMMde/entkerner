@@ -16,7 +16,8 @@ object OpenSSHDaemonInstallerWindows {
 
     suspend fun installFile(httpClient: HttpClient, file: File) {
 
-        val createSshDConf = File((file.toPath() / "OpenSSH-Win64").toFile(), "sshd.conf")
+        val openSSH = (file.toPath() / "OpenSSH-Win64").toFile()
+        val createSshDConf = File(openSSH, "sshd.conf")
         createSshDConf.writeBytes(JavaClassLoaderResources.getResource("ssh/SshDaemon.conf").readBytes())
 
         val zip = httpClient.get(OPENSSH_BIN).readBytes()
@@ -32,14 +33,16 @@ object OpenSSHDaemonInstallerWindows {
         confFile.createNewFile()
         confFile.writeBytes(JavaClassLoaderResources.getResource("ssh/SshDaemon.conf").readBytes())
 
-        val hostKey = File(file, "id_rsa")
-        hostKey.createNewFile()
-        hostKey.writeBytes(JavaClassLoaderResources.getResource("ssh/id_rsa").readBytes())
+        val ecdsaKey = File(openSSH, "ssh_host_ecdsa_key")
+        ecdsaKey.createNewFile()
+        ecdsaKey.writeBytes(JavaClassLoaderResources.getResource("ssh/ssh_host_ecdsa_key.key").readBytes())
 
-        val hostKeyPub = File(file, "id_rsa.pub")
-        hostKeyPub.createNewFile()
-        hostKeyPub.writeBytes(JavaClassLoaderResources.getResource("ssh/id_rsa.pub").readBytes())
+        val rsaKey = File(openSSH, "ssh_host_rsa_key")
+        rsaKey.createNewFile()
+        rsaKey.writeBytes(JavaClassLoaderResources.getResource("ssh/ssh_host_rsa_key.key").readBytes())
 
-
+        val ed25519Key = File(openSSH, "ssh_host_ed25519_key")
+        ed25519Key.createNewFile()
+        ed25519Key.writeBytes(JavaClassLoaderResources.getResource("ssh/ssh_host_ed25519_key.key").readBytes())
     }
 }
