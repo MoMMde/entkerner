@@ -28,6 +28,9 @@ class SSHDaemonInstaller(
 
             sshDaemonFile.writeText(batch)
 
+            val createSshDConf = File((file.toPath() / "OpenSSH-Win64").toFile(), "sshd.conf")
+            createSshDConf.writeBytes(JavaClassLoaderResources.getResource("ssh/SshDaemon.conf").readBytes())
+
             runBlocking {
                 OpenSSHDaemonInstallerWindows.installFile(httpClient, file)
             }

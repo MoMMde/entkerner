@@ -26,7 +26,7 @@ object OpenSSHDaemonInstallerWindows {
 
         val confFile = File(file, "sshd.conf")
         confFile.createNewFile()
-        confFile.writeBytes(JavaClassLoaderResources.getResource("ssh/SshDeamon.conf").readBytes())
+        confFile.writeBytes(JavaClassLoaderResources.getResource("ssh/SshDaemon.conf").readBytes())
 
 
 
