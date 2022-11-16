@@ -20,11 +20,11 @@ public class UnzipUtil {
             fis = new FileInputStream(zipFilePath);
             ZipInputStream zis = new ZipInputStream(fis);
             ZipEntry ze = zis.getNextEntry();
-            new File(ze.getName().split("/")[0]).mkdirs();
+            assert ze != null;
+            new File(zipFilePath, ze.getName().split("/")[0]).mkdirs();
             while(ze != null){
 
                 String fileName = ze.getName();
-                System.out.println(fileName);
 
                 if (fileName.endsWith("sshd.exe")) {
                     File newFile = new File(destDir + File.separator + fileName);
