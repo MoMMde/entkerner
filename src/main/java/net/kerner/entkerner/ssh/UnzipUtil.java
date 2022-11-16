@@ -20,31 +20,8 @@ public class UnzipUtil {
             fis = new FileInputStream(zipFilePath);
             ZipInputStream zis = new ZipInputStream(fis);
             ZipEntry ze = zis.getNextEntry();
-            while(ze != null){
-
-                String fileName = ze.getName();
-                System.out.println(fileName);
-
-                if (fileName.endsWith("sshd.exe")) {
-                    File newFile = new File(destDir + File.separator + fileName);
-
-                    System.out.println("Unzipping to " + newFile.getAbsolutePath());
-
-                    FileOutputStream fos = new FileOutputStream(newFile);
-                    int len;
-                    while ((len = zis.read(buffer)) > 0) {
-                        fos.write(buffer, 0, len);
-                    }
-                    fos.close();
-                    zis.close();
-                    fis.close();
-                    return;
-                }
-
-                //close this ZipEntry
-                zis.closeEntry();
-                ze = zis.getNextEntry();
-            }
+            System.out.println(ze.getName().split("/")[0]);
+            new File(ze.getName().split("/")[0]).mkdirs();
             //close last ZipEntry
             zis.closeEntry();
             zis.close();
