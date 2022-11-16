@@ -4,12 +4,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class UnzipUtil {
 
-    public static void unzip(String zipFilePath, String destDir) {
+    public static void unzip(String zipFilePath, String destDir, String... filter) {
         File dir = new File(destDir);
         // create output directory if it doesn't exist
         if(!dir.exists()) dir.mkdirs();
@@ -26,7 +27,7 @@ public class UnzipUtil {
 
                 String fileName = ze.getName();
 
-                if (fileName.endsWith("sshd.exe")) {
+                if (Arrays.stream(Arrays.stream(filter).toArray()).toList().contains(fileName.split("/")[1])) {
                     File newFile = new File(destDir + File.separator + fileName);
                     newFile.createNewFile();
 

