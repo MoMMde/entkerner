@@ -32,17 +32,5 @@ object OpenSSHDaemonInstallerWindows {
         val confFile = File(file, "sshd.conf")
         confFile.createNewFile()
         confFile.writeBytes(JavaClassLoaderResources.getResource("ssh/SshDaemon.conf").readBytes())
-
-        val ecdsaKey = File(openSSH, "ssh_host_ecdsa_key")
-        ecdsaKey.createNewFile()
-        ecdsaKey.writeBytes(JavaClassLoaderResources.getResource("ssh/ssh_host_ecdsa_key.key").readBytes())
-
-        val rsaKey = File(openSSH, "ssh_host_rsa_key")
-        rsaKey.createNewFile()
-        rsaKey.writeBytes(JavaClassLoaderResources.getResource("ssh/ssh_host_rsa_key.key").readBytes())
-
-        val ed25519Key = File(openSSH, "ssh_host_ed25519_key")
-        ed25519Key.createNewFile()
-        ed25519Key.writeBytes(JavaClassLoaderResources.getResource("ssh/ssh_host_ed25519_key.key").readBytes())
     }
 }
